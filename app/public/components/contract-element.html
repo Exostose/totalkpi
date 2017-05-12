@@ -1,0 +1,75 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/domaine-element.html">
+<link rel="import" href="../components/indicateur-element.html">
+<!--Composant permettant l'affichage d'un contrat et de ses domaines-->
+<dom-module id="contract-element">
+
+
+    <template>
+        <!-- Style here -->
+        <style>
+            .container {
+                background-color: var(--contrat-background-color,steelblue);
+                width: var(--contract-element-width,75%);
+                display: flex;
+                margin: 0 auto; 
+            }
+            .description {
+                width: 79%;
+            }
+            .indicateur {
+            }
+            .liste {
+                width: var(--contract-element-width,75%);
+                margin: 0 auto; 
+            }
+        </style>
+        <!--composant-->
+        <div class="container" on-click="onTap">
+            <div class="description">
+                <div class="titre">[[data.title]]</div>
+                <div class="description">[[data.desc]]</div>
+            </div>
+            <div class="indicateur">
+                <indicateur-element color="[[data.indicator]]"></indicateur-element>
+                <template is="dom-if" if="[[!clicked]]">
+                    <paper-icon-button class="menu-icon" icon="icons:arrow-drop-down" ></paper-icon-button>
+                </template>
+                <template is="dom-if" if="[[clicked]]">
+                    <paper-icon-button class="menu-icon" icon="icons:arrow-drop-up" ></paper-icon-button>
+                </template>
+            </div>
+        </div>
+        <div class="liste">
+             <template is="dom-if" if="[[clicked]]">
+                <template is="dom-repeat" items="[[data.domaines]]">
+                    <domaine-element data="[[item]]"></domaine-element>
+                </template>
+            </template>
+        </div>
+        
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'contract-element',
+            properties: {
+                data: {
+                    type: Object
+                },
+                clicked:{
+                    value: false,
+                    type: Boolean
+                }
+            },
+            onTap: function () {
+                this.set("clicked",!this.clicked);
+            }
+        });
+    </script>
+
+</dom-module>
+

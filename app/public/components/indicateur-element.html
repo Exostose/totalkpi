@@ -1,0 +1,33 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
+
+<!--Composant permettant d'afficher la couleur d'un indicateur (attribut color)-->
+<dom-module id="indicateur-element">
+
+    <template>
+        <!-- Style here -->
+        <style>
+            iron-icon {
+                
+            }
+        </style>
+        
+        <iron-icon class="indicateur" icon="av:fiber-manual-record" style="color:[[color]]"></iron-icon>
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'indicateur-element',
+            properties: {
+                color: {
+                    type: String,
+                    value: "black"
+                }
+            }
+        });
+    </script>
+
+</dom-module>
+

@@ -1,0 +1,68 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/indicateur-element.html">
+
+<!--Composant d'affichage des applications, un click dessus doit emmener vers un descriptif detaillé-->
+<dom-module id="appli-element">
+
+
+    <template>
+        <!-- Style here -->
+        <style>
+            .container {
+                background-color: var(--appli-background-color,cadetblue);
+                width: var(--appli-element-width,95%);
+                display: flex;
+                margin: 0 auto; 
+            }
+            .description {
+                width: 79%;
+            }
+            .indicateur {
+            }
+ 
+        </style>
+        
+        <div class="container">
+            <div class="description">
+                <div class="titre">[[data.title]]</div>
+                <div class="description">[[data.desc]]</div>
+            </div>
+            <div class="indicateur">
+                <indicateur-element color="[[data.indicator]]"></indicateur-element>
+                <paper-icon-button class="menu-icon" icon="icons:arrow-forward" ></paper-icon-button>
+            </div>
+        </div>
+        
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'appli-element',
+            properties: {
+                data: {
+                    value: {
+                        title: "Appli0",
+                        desc: "Texte supplémentaire (option)"
+                    },
+                    type: Object
+                },
+                clicked:{
+                    value: false,
+                    type: Boolean
+                }
+            },
+            listeners: {
+                tap:'onTap'
+            },
+            onTap: function () {
+                this.set("clicked",!this.clicked);
+                /*TODO: Aller au descriptif detaillé des indicateurs*/
+            }
+        });
+    </script>
+
+</dom-module>
+

@@ -1,0 +1,6 @@
+{
+  "directory": "bower_components", 
+  "proxy": "http://fr-proxy.groupinfra.com:3128",
+  "https-proxy":"http://fr-proxy.groupinfra.com:3128",
+  "no-proxy":"myserver.mydomain.com"
+}

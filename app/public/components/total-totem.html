@@ -1,0 +1,145 @@
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../components/application-header.html">
+<link rel="import" href="../components/liste-contrat.html">
+<link rel="import" href="../components/gestion-ticket.html">
+<link rel="import" href="../components/favoris-ticket.html">
+<link rel="import" href="../components/admin-page.html">
+<link rel="import" href="../components/admin-page-domaine.html">
+<link rel="import" href="../components/admin-page-feu.html">
+<link rel="import" href="../components/admin-page-horaire.html">
+<link rel="import" href="../components/admin-page-indic.html">
+<link rel="import" href="../components/admin-page-lot.html">
+<link rel="import" href="../components/admin-page-periode.html">
+<link rel="import" href="../components/admin-page-service.html">
+<link rel="import" href="../components/admin-page-sla.html">
+<link rel="import" href="../components/admin-page-contact.html">
+
+<dom-module id="total-totem">
+
+    <template>
+        <!-- Style here -->
+        <style>
+            paper-material {
+                min-height: 200px;
+                margin: 2em;
+            }
+        </style>
+        
+        <paper-header-panel>
+            <application-header url="{{route}}"></application-header>
+        </paper-header-panel>
+
+        <!-- Sections -->
+        <iron-pages attr-for-selected="data-route" selected="[[route]]">
+            <section id="contrats" data-route="contrats">
+                <paper-material elevation="1">
+                    <liste-contrat></liste-contrat>   
+                </paper-material>
+            </section>
+            <section id="tickets" data-route="tickets">
+                <paper-material elevation="1">
+                    <gestion-ticket id="ticketing"></gestion-ticket>
+                </paper-material>
+            </section>
+			<section id="FavTicket" data-route="FavTicket">
+				<paper-material elevation="1">
+					<favoris-ticket id="favTick"></favoris-ticket>
+				</paper-material>
+			</section>
+                        <section id="admin-page" data-route="admin-page">
+				<paper-material elevation="1">
+					<admin-page></admin-page>
+				</paper-material>
+			</section>
+            <section id="admin-page-contrat" data-route="admin-page-contrat">
+                <paper-material elevation="1">
+                    <admin-page-contrat></admin-page-contrat>
+                </paper-material>
+            </section>
+            <section id="admin-page-lot" data-route="admin-page-lot">
+                <paper-material elevation="1">
+                    <admin-page-lot></admin-page-lot>
+                </paper-material>
+            </section>
+            <section id="admin-page-domaine" data-route="admin-page-domaine">
+                <paper-material elevation="1">
+                    <admin-page-domaine id="dom"></admin-page-domaine>
+                </paper-material>
+            </section>
+            <section id="admin-page-application" data-route="admin-page-application">
+                <paper-material elevation="1">
+                    <admin-page-application></admin-page-application>
+                </paper-material>
+            </section>
+            <section id="admin-page-indic" data-route="admin-page-indic">
+                <paper-material elevation="1">
+                    <admin-page-indic></admin-page-indic>
+                </paper-material>
+            </section>
+            <section id="admin-page-service" data-route="admin-page-service">
+                <paper-material elevation="1">
+                    <admin-page-service></admin-page-service>
+                </paper-material>
+            </section>
+            <section id="admin-page-horaire" data-route="admin-page-horaire">
+                <paper-material elevation="1">
+                    <admin-page-horaire></admin-page-horaire>
+                </paper-material>
+            </section>
+            <section id="admin-page-contact" data-route="admin-page-contact">
+                <paper-material elevation="1">
+                    <admin-page-contact></admin-page-contact>
+                </paper-material>
+            </section>
+            <section id="admin-page-comite" data-route="admin-page-comite">
+                <paper-material elevation="1">
+                    <admin-page-comite></admin-page-comite>
+                </paper-material>
+            </section>
+            <section id="admin-page-sla" data-route="admin-page-sla">
+                <paper-material elevation="1">
+                    <admin-page-sla></admin-page-sla>
+                </paper-material>
+            </section>
+            <section id="admin-page-periode" data-route="admin-page-periode">
+                <paper-material elevation="1">
+                    <admin-page-periode></admin-page-periode>
+                </paper-material>
+            </section>
+            <section id="admin-page-feu" data-route="admin-page-feu">
+                <paper-material elevation="1">
+                    <admin-page-feu></admin-page-feu>
+                </paper-material>
+            </section>
+        </iron-pages>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'total-totem',
+            properties: {
+                route: {
+                    type: String,
+                    value: "contrats",
+                    notify: true
+                }
+            },
+            listeners: {
+                "urlChangeEvent": "changeUrl"
+            },
+            changeUrl: function(e) {
+                
+                if (e.detail.route == "FavTicket") {
+                    this.querySelector("#favTick").refreshTab();
+                } else if (e.detail.route == "tickets") {
+                    this.querySelector("#ticketing").f();
+                } else if (e.detail.route == "admin-page-domaine") {
+                    this.querySelector("#dom").sendRequest();
+                }
+                this.set("route", e.detail.route)
+            }
+        });
+    </script>
+
+</dom-module>

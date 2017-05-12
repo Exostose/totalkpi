@@ -1,0 +1,62 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../components/contract-element.html">
+<link rel="import" href="../components/appli-element.html">
+
+<!--Composant d'affichage de la liste des contrats, charge les données depuis le serveur-->
+
+<dom-module id="liste-contrat">
+
+    <template>
+        <!-- Style here -->
+        <style>
+            .container {
+                width: var(--liste-contrat-width,75%);
+                display: flex;
+                margin: 0 auto; 
+            }
+            contract-element {
+                width: 100%;
+            }
+        </style>
+        
+        <iron-ajax
+            id="getContratData"
+            url={{callWebService("getContratData")}} 
+            method="GET"
+            content-type="application/x-www-form-urlencoded"
+            handle-as="json"
+            on-response="initComposant">
+        </iron-ajax>
+        <div class="container">
+            <template is=dom-repeat items="[[data]]">
+                <contract-element data="[[item]]"></contract-element>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'liste-contrat',
+            properties: {
+                data: {
+                    type:Array,
+                    value:[]
+                }
+            },
+            callWebService:function(restUrl){
+                return "http://localhost:8080/" + restUrl;
+            },
+            initComposant:function(request){
+                console.log(request)
+                this.set("data",request.detail.response);
+            },
+            ready: function(){
+				this.querySelector('#getContratData').params = {}
+                this.querySelector('#getContratData').generateRequest();
+            }
+        });
+    </script>
+
+</dom-module>
+

@@ -1,0 +1,168 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-dropdown-input/paper-dropdown-input.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/iron-data-table/iron-data-table.html">
+
+
+<dom-module id="favoris-ticket">
+
+    <template>
+        <!-- Style here -->
+        <style>
+            
+        </style>
+
+    <iron-ajax 
+        id="reqTabFav" 
+        handle-as="json"
+        method="POST" 
+        on-response="changeItem">
+    </iron-ajax>
+    <iron-ajax 
+        id="reqTabFav2" 
+        handle-as="json"
+        method="POST"
+        on-response="refreshTab"
+        content-type="application/json">
+    </iron-ajax>
+
+    <!-- DATA TABLE -->
+    <iron-data-table autoRefresh items="" id="tableFAVTicket">
+        <data-table-column name="ID Ticket">
+            <template>[[item.ID]]</template>
+    </data-table-column>
+    <data-table-column name="Priorité">
+        <template>[[item.PRIORITY]]</template>
+    </data-table-column>
+    <data-table-column name="Status requête">
+        <template>[[item.REQUEST_STATUS]]</template>
+    </data-table-column>
+    <data-table-column name="Application">
+        <template>[[item.APPLICATION]]</template>
+    </data-table-column>
+    <data-table-column name="Favoris">
+        <template><paper-checkbox noink name="[[item.ID]]" checked="[[item.FAVORIS]]" on-change="switchFavo"></paper-checkbox></template>
+    </data-table-column>
+    <data-table-column name="Détails">
+        <template><paper-button noink raised name="[[item.ID]]" on-click="getRightTicket"></paper-button></template>
+    </data-table-column>
+    </iron-data-table>
+
+    <p>[[text0]]</p>
+    <p>[[text1]]</p>
+    <p>[[text2]]</p>
+    <p>[[text3]]</p>
+    <p>[[text4]]</p>
+    <p>[[text5]]</p>
+    <p>[[text6]]</p>
+    <p id="scroll123">[[text7]]</p>
+
+    <paper-button raised id="mask" on-click="g" hidden>Cacher</paper-button>
+
+
+    </template>
+    <script>
+        Polymer({
+            is: 'favoris-ticket',
+            properties: {
+                text0: {
+                    value: ""
+                },
+                text1: {
+                    value: ""
+                },
+                text2: {
+                    value: ""
+                },
+                text3: {
+                    value: ""
+                },
+                text4: {
+                    value: ""
+                },
+                text5: {
+                    value: ""
+                },
+                text6: {
+                    value: ""
+                },
+                text7: {
+                    value: ""
+                },
+                Object: {
+                    type: Object
+                }
+            },
+            g: function(e) {
+                this.set("text0", "");
+                this.set("text1", "");
+                this.set("text2", "");
+                this.set("text3", "");
+                this.set("text4", "");
+                this.set("text5", "");
+                this.set("text6", "");
+                this.set("text7", "");
+                this.querySelector("#mask").hidden = true;
+                this.$.tableFAVTicket.scrollIntoView();
+            },
+            listeners: {
+                "refreshTabEvent": "refreshTab"
+            },
+            changeItem: function(e) {
+                this.Object = e.detail.response;
+                console.log(this.Object);
+                document.getElementById("tableFAVTicket").items = this.Object;
+            },
+            refreshTab: function(e) {
+                this.$.reqTabFav.url = "/getFav";
+                this.$.reqTabFav.generateRequest();
+            },
+            getRightTicket: function(e) {
+                for (var i = 0; i < this.Object.length; i++) {
+                    if (e.target.name == this.Object[i].ID) {
+                        this.printTicketSelected(this.Object[i]);
+                        break;
+                    }
+                }
+            },
+            switchFavo: function(e) {
+                var body = {
+                    "id": e.target.name,
+                    "Fav": e.target.checked
+                };
+                console.log(e);
+                this.$.reqTabFav2.url = "/ToggleFav";
+                this.$.reqTabFav2.body = body;
+                this.$.reqTabFav2.generateRequest();
+            },
+            printTicketSelected: function(ticket) {
+
+                var str = new Array();
+                str[0] = ticket.ID;
+                str[1] = ticket.PRIORITY;
+                str[2] = ticket.REQUEST_STATUS;
+                str[3] = ticket.APPLICATION;
+                str[4] = ticket.CREATION_DATE;
+                str[5] = ticket.OLA_START;
+                str[6] = ticket.OLA_END_DATE;
+                str[7] = ticket.OLA_EXPECTED;
+
+                this.set("text0", "ID: " + str[0]);
+                this.set("text1", "PRIORITY: " + str[1]);
+                this.set("text2", "REQUEST_STATUS: " + str[2]);
+                this.set("text3", "APPLICATION: " + str[3]);
+                this.set("text4", "CREATION_DATE: " + str[4]);
+                this.set("text5", "OLA_START: " + str[5]);
+                this.set("text6", "OLA_END_DATE: " + str[6]);
+                this.set("text7", "OLA_EXPECTED: " + str[7]);
+                this.querySelector("#mask").hidden = false;
+                this.$.scroll123.scrollIntoView();
+
+            }
+        });
+    </script>
+</dom-module>

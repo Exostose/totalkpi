@@ -1,0 +1,76 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/indicateur-element.html">
+<link rel="import" href="../components/lot-element.html">
+
+<!--Composant d'affichage d'un domaine et de ses lots-->
+<dom-module id="domaine-element">
+
+    <template>
+        <!-- Style here -->
+        <style>
+
+            .container {
+                background-color: var(--domaine-background-color,lightblue);
+                width: var(--domaine-element-width,95%);
+                display: flex;
+                margin: 0 auto; 
+            }
+            .description {
+                width: 79%;
+            }
+            .indicateur {
+            }
+            .liste {
+                width: var(--liste-element-width,95%);
+                margin: 0 auto; 
+            }
+        </style>
+        
+        <div class="container" on-click="onTap">
+            <div class="description">
+                <div class="titre">[[data.title]]</div>
+                <div class="description">[[data.desc]]</div>
+            </div>
+            <div class="indicateur">
+                <indicateur-element color="[[data.indicator]]"></indicateur-element>
+                <template is="dom-if" if="[[!clicked]]">
+                    <paper-icon-button class="menu-icon" icon="icons:arrow-drop-down" ></paper-icon-button>
+                </template>
+                <template is="dom-if" if="[[clicked]]">
+                    <paper-icon-button class="menu-icon" icon="icons:arrow-drop-up" ></paper-icon-button>
+                </template>
+            </div>
+        </div>
+        <div class="liste">
+            <template is="dom-if" if="[[clicked]]">
+                <template is="dom-repeat" items="[[data.lots]]">
+                    <lot-element data="[[item]]"></lot-element>
+                </template>
+            </template>
+        </div>
+        
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'domaine-element',
+            properties: {
+                data: {
+                    type: Object
+                },
+                clicked:{
+                    value: false,
+                    type: Boolean
+                }
+            },
+            onTap: function () {
+                this.set("clicked",!this.clicked);
+            }
+        });
+    </script>
+
+</dom-module>
+

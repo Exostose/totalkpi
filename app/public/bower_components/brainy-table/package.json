@@ -1,0 +1,26 @@
+{
+  "name": "brainy-table",
+  "author": "OWOX Inc.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OWOX/brainy-table.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^3.18.0",
+    "eslint-config-google": "^0.6.0",
+    "eslint-plugin-html": "^2.0.1",
+    "npm-run-all": "^4.0.2",
+    "stylelint": "^7.9.0",
+    "stylelint-config-standard": "^16.0.0",
+    "stylelint-processor-html": "^1.0.0",
+    "web-component-tester": "^5.0.0"
+  },
+  "scripts": {
+    "lint:js": "eslint *.html **/*.html --ext .html",
+    "lint:css": "stylelint **/*.html",
+    "lint": "npm-run-all --parallel lint:*",
+    "pretest": "npm run lint",
+    "test": "wct -l chrome,firefox"
+  }
+}

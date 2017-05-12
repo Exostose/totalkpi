@@ -1,0 +1,208 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+
+
+<!--En tête de l'application-->
+<dom-module id="application-header">
+    <template>
+        <!-- Style here -->
+        <style>
+            :host {
+                --paper-toolbar-background:var(--header-background-color, #E31937);
+                --paper-toolbar: {
+                    height: 70px;
+                    border-style: solid;
+                    border-color: var(--menu-border-color, black);
+                }
+            }
+            .sized {
+                width: 5em;
+                height: 5em;
+            }
+            .menu,.login {
+                display: inline-flex;
+                width: 50%;
+                height: 100%;
+            }
+            .menu-button {
+                cursor: pointer;
+            }
+            .menu-button,.logo,.profil {
+                width: 33%;
+            }
+            .menu-button,.logo,.login {
+                text-align: center;
+                background-color:var(--menu-button-background-color, #E31937);
+            }
+            .paper-toolbar.no-right-border {
+                border-right-style: none;
+            }
+            .menu-button:before,.logo:before,.profil:before {
+                content: "";
+                display: inline-block;
+                height: 100%;
+                vertical-align: middle;
+            }
+            .logo,.menu-button {
+                border-right-style: solid;
+                border-color: var(--menu-border-color, black);
+            }
+            .profil.icons {
+                text-align: right;
+            }
+        </style>
+        <!--Composant-->
+        <paper-toolbar>
+            
+            <div class="menu">
+                <div class="logo">
+                    <iron-image src="[[logoUrl]]" position="cover" sizing="contain" class="sized" ></iron-image>
+                </div>
+                <div class="menu-button no-right-border" on-click="selectContrat" >Contrats</div>
+                <div class="menu-button" on-click="selectTicket" >Tickets</div>
+				<div class="menu-button" on-click="selectFavTickets">Favoris tickets</div>
+                <div class="mydropdown menu-button" >Admin
+                    <div class="mydropdown-content">
+                        <div on-click="selectContrat">Contrat</div>
+                        <div on-click="selectLot">Lot</div>
+                        <div on-click="selectDomaine">Domaine</div>
+                        <div on-click="selectApplication">Application</div>
+                        <div on-click="selectIndic">Ref_indic</div>
+                        <div on-click="selectService">Ref_service</div>
+                        <div on-click="selectHoraire">Horaire</div>
+                        <div on-click="selectcontact">Ref_contact</div>
+                        <div on-click="selectSla">Ref_sla</div>
+                        <div on-click="selectPeriode">Ref_Periode</div>
+                        <div on-click="selectFeu">Ref_feu</div>
+                    </div>
+                </div>
+            </div>
+			
+            <div class="login">
+                <div class="profil">[[nom]]</div>
+                <div class="profil">[[email]]</div>
+                <div class="profil icons">
+                    <paper-icon-button class="menu-icon" icon="icons:exit-to-app" on-click="logout"></paper-icon-button>
+                </div>
+            </div>
+			
+        </paper-toolbar>
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'application-header',
+            properties: {
+                logoUrl: {
+                    value: "images/cgi_cerise.svg",
+                    type: String
+                },
+                isLogged: {
+                    value: false,
+                    type: Boolean
+                },
+                nom: {
+                    value: "John Doe",
+                    type: String
+                },
+                email: {
+                    value: "john.doe@exemple.com",
+                    type: String
+                },
+                url: {
+                    type: String,
+                    reflectToAttribute: true
+                }
+            },
+            selectContrat: function() {
+                /*this.set("url","contrats");*/
+                this.fire('urlChangeEvent', {
+                    route: "contrats"
+                });
+
+            },
+            selectFavTickets: function() {
+                this.fire('refreshTabEvent');
+                this.fire('urlChangeEvent', {
+                    route: "FavTicket"
+                });
+            },
+            selectTicket: function() {
+                /*this.set("url","tickets")*/
+                this.fire('urlChangeEvent', {
+                    route: "tickets"
+                });
+            },
+            selectAdmin: function() {
+                /*this.set("url","tickets")*/
+                this.fire('urlChangeEvent', {
+                    route: "admin-page"
+                });
+            },
+            selectContrat: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-contrat"});
+
+            },
+
+            selectLot: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-lot"});
+
+            },
+
+            selectDomaine: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-domaine"});
+
+            },
+
+            selectApplication: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-application"});
+
+            },
+
+            selectIndic: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-indic"});
+
+            },
+
+            selectService: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-service"});
+
+            },
+
+            selectHoraire: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-horaire"});
+
+            },
+
+            selectcontact: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-contact"});
+
+            },
+
+            selectSla: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-sla"});
+
+            },
+
+            selectPeriode: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-periode"});
+
+            },
+
+            selectFeu: function() {
+                this.fire('urlChangeEvent', {route:"admin-page-feu"});
+
+            },
+            logout: function() {
+                /*TODO*/
+                console.log("TODO:logout")
+            }
+        });
+    </script>
+
+</dom-module>
