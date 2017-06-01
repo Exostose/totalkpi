@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../components/application-header.html">
+
+
+<dom-module id="connexion-login">
+
+
+    <template>
+        <!-- Style here -->
+        <style>
+            
+        </style>
+		
+	<body>
+        <p>ECRAN DE CONNEXION</p>
+<!-- APPLICATION DROPDOWN LISTBOX -->
+        <p>[[text]]</p>
+        <paper-input label="login" char-counter maxlength="10" id="login"></paper-input>
+        <paper-input label="password input" type="password" id="password"></paper-input>
+        <paper-button raised noink on-click="f">raised</paper-button>
+    </body>
+    </template>
+    <script>
+        Polymer({
+            is: 'connexion-login',
+            properties: {
+                text: {
+                    value: ""
+                }
+            },
+            f: function(e) {
+                this.fire('login', {
+                    logID: this.querySelector("#login").value,
+                    pass: this.querySelector("#password").value
+                });
+            },
+            mC: function() {
+                this.set("text", "Mauvaise combinaison ID/mot de passe")
+            }
+        });
+
+    </script>
+</dom-module>

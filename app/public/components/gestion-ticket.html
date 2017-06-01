@@ -51,8 +51,8 @@
 </paper-dropdown-menu>
 
 <!-- APPLICATION DROPDOWN LISTBOX -->
-<iron-ajax 
-	auto 
+<iron-ajax  
+    id="okalm"
 	url="/getApp"
 	on-response="ajaxResult2"
 	content-type="application/json"
@@ -94,14 +94,14 @@
         </data-table-column>
     </iron-data-table>
 
-    <p>[[text0]]</p>
-    <p>[[text1]]</p>
-    <p>[[text2]]</p>
-    <p>[[text3]]</p>
-    <p>[[text4]]</p>
-    <p>[[text5]]</p>
-    <p>[[text6]]</p>
-    <p id="scroll123">[[text7]]</p>
+    <p id="txt1" hidden><b>ID: </b>[[text0]]</p>
+    <p id="txt2" hidden>PRIORITY: [[text1]]</p>
+    <p id="txt3" hidden>REQUEST_STATUS: [[text2]]</p>
+    <p id="txt4" hidden>APPLICATION: [[text3]]</p>
+    <p id="txt5" hidden>CREATION_DATE: [[text4]]</p>
+    <p id="txt6" hidden>OLA_START: [[text5]]</p>
+    <p id="txt7" hidden>OLA_END_DATE: [[text6]]</p>
+    <p id="txt8" hidden>OLA_EXPECTED: [[text7]]</p>
 
     <paper-button raised id="mask" on-click="g" hidden>Cacher</paper-button>
 
@@ -134,7 +134,6 @@
                 text7: {
                     value: ""
                 },
-
                 dataApp: {
                     type: Array,
                     APPLICATION: []
@@ -146,6 +145,7 @@
             },
             ajaxResult2: function(e) {
                 this.set("dataApp", e.detail.response);
+                console.log(this.dataApp);
             },
             ajaxResult: function(e) {
                 if (e.detail.response != null) {
@@ -158,14 +158,11 @@
 
             },
             g: function(e) {
-                this.set("text0", "");
-                this.set("text1", "");
-                this.set("text2", "");
-                this.set("text3", "");
-                this.set("text4", "");
-                this.set("text5", "");
-                this.set("text6", "");
-                this.set("text7", "");
+                var string;
+                for (var i = 1; i < 9; i++) {
+                    string = "#txt" + i;
+                    this.querySelector(string).hidden = true;
+                }
                 this.querySelector("#mask").hidden = true;
                 this.$.comment.scrollIntoView();
             },
@@ -180,6 +177,9 @@
                 this.$.request.body = body;
                 this.$.request.generateRequest();
             },
+            p: function(e) {
+                this.$.okalm.generateRequest();
+            },
             getRightTicket: function(e) {
                 for (var i = 0; i < this.ObjectData.length; i++) {
                     if (e.target.name == this.ObjectData[i].ID) {
@@ -190,35 +190,30 @@
             },
             printTicketSelected: function(ticket) {
 
-                var str = new Array();
-                str[0] = ticket.ID;
-                str[1] = ticket.PRIORITY;
-                str[2] = ticket.REQUEST_STATUS;
-                str[3] = ticket.APPLICATION;
-                str[4] = ticket.CREATION_DATE;
-                str[5] = ticket.OLA_START;
-                str[6] = ticket.OLA_END_DATE;
-                str[7] = ticket.OLA_EXPECTED;
+                this.set("text0", ticket.ID);
+                this.set("text1", ticket.PRIORITY);
+                this.set("text2", ticket.REQUEST_STATUS);
+                this.set("text3", ticket.APPLICATION);
+                this.set("text4", ticket.CREATION_DATE);
+                this.set("text5", ticket.OLA_START);
+                this.set("text6", ticket.OLA_END_DATE);
+                this.set("text7", ticket.OLA_EXPECTED);
 
-                this.set("text0", "ID: " + str[0]);
-                this.set("text1", " PRIORITY: " + str[1]);
-                this.set("text2", " REQUEST_STATUS: " + str[2]);
-                this.set("text3", " APPLICATION: " + str[3]);
-                this.set("text4", " CREATION_DATE: " + str[4]);
-                this.set("text5", " OLA_START: " + str[5]);
-                this.set("text6", " OLA_END_DATE: " + str[6]);
-                this.set("text7", " OLA_EXPECTED: " + str[7]);
+                var string;
+                for (var i = 1; i < 9; i++) {
+                    string = "#txt" + i;
+                    this.querySelector(string).hidden = false;
+                }
                 this.querySelector("#mask").hidden = false;
-                this.$.scroll123.scrollIntoView();
+                this.$.txt8.scrollIntoView();
 
-                var body2 = {
+                /*var body2 = {
                     "text": this.text0 + this.text1 + this.text2 + this.text3 + this.text4 + this.text5 + this.text6 + this.text7
                 };
 
                 this.$.request.url = "/mailing";
                 this.$.request.body = body2;
-                this.$.request.generateRequest();
-
+                this.$.request.generateRequest();*/
             },
             switchFav: function(e) {
                 var body = {
@@ -236,6 +231,7 @@
                 console.log(event.detail.request.xhr.response);
             },
         });
+
     </script>
 </dom-module>
 

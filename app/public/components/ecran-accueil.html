@@ -1,0 +1,60 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../components/connexion-login.html">
+<link rel="import" href="../../components/total-totem.html">
+
+
+<dom-module id="ecran-accueil">
+
+
+    <template>
+        <!-- Style here -->
+        <style>
+            
+        </style>
+		
+	<body>
+<!-- APPLICATION DROPDOWN LISTBOX -->
+
+<iron-ajax 
+    method="POST"
+    id="loginData"
+    on-response="ajaxResult"
+    content-type="application/json"
+    handle-as="json">
+</iron-ajax>
+        
+        <connexion-login id="conn"></connexion-login>
+        <total-totem id="tot" hidden></total-totem>
+    </body>
+    </template>
+    <script>
+        Polymer({
+            is: 'ecran-accueil',
+            listeners: {
+                "login": "tryLogin"
+            },
+            tryLogin: function(e) {
+                var body = {
+                    "login": e.detail.logID,
+                    "password": e.detail.pass
+                }
+                this.$.loginData.url = "/connect";
+                this.$.loginData.body = body;
+                this.$.loginData.generateRequest();
+
+            },
+            ajaxResult: function(e) {
+                console.log(e.detail.response);
+                if (e.detail.response === "ok") {
+                    this.querySelector("#conn").hidden = true;
+                    this.querySelector("#tot").hidden = false;
+                } else if (e.detail.response === "no") {
+                    this.querySelector("#conn").mC();
+                }
+
+            }
+        });
+
+    </script>
+
+</dom-module>

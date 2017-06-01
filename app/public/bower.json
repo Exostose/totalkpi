@@ -33,6 +33,7 @@
     "paper-dropdown-input": "Juravenator/paper-dropdown-input#^2.2.1",
     "brainy-table": "OWOX/brainy-table#^1.7.3",
     "iron-data-table": "Saulis/iron-data-table#^1.0.7",
-    "paper-checkbox": "PolymerElements/paper-checkbox#^1.4.2"
+    "paper-checkbox": "PolymerElements/paper-checkbox#^1.4.2",
+    "paper-input-group": "ryanburns23/paper-input-group#^1.0.1"
   }
 }

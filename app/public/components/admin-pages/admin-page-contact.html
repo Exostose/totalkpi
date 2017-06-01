@@ -1,0 +1,193 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-dropdown-input/paper-dropdown-input.html">
+<link rel="import" href="../../bower_components/iron-data-table/iron-data-table.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../components/application-header.html">
+<link rel="import" href="../../bower_components/paper-input-group/paper-input-group.html">
+
+<dom-module id="admin-page-contact">
+
+
+    <template>
+	<body>
+
+<!-- APPLICATION DROPDOWN LISTBOX -->
+<iron-ajax 
+    method="POST"
+    id="getElement"
+    on-response="ajaxResult2"
+    content-type="application/json"
+    handle-as="json">
+</iron-ajax>
+<iron-ajax 
+    method="POST"
+    id="getSQLResult"
+    on-response="ajaxResult"
+    content-type="application/json"
+    handle-as="json">
+</iron-ajax>
+ 
+<paper-dropdown-menu label="Nom" items="" noink no-animations>
+    <paper-listbox attr-for-selected="name" class="dropdown-content" selected="All" id="CON">
+        <paper-item name="All">All</paper-item>
+        <template is=dom-repeat items="[[nom]]">
+            <paper-item name="[[item.NOM]]">[[item.NOM]]</paper-item>
+        </template>
+    </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-dropdown-menu label="Fonction" items="" noink no-animations>
+        <paper-listbox attr-for-selected="name" class="dropdown-content" selected="All" id="CON2">
+            <paper-item name="All">All</paper-item>
+            <template is=dom-repeat items="[[fonction]]">
+            <paper-item name="[[item.FONCTION]]">[[item.FONCTION]]</paper-item>
+        </template>
+        </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-button raised id="button" on-click="f">Rechercher</paper-button>
+
+    <!-- DATA TABLE -->
+    <iron-data-table items="" id="tableCON">
+        <data-table-column name="Nom">
+            <template><paper-input id="N[[item.ref_contact.ID]]" value="[[item.ref_contact.NOM]]"></paper-input></template>
+        </data-table-column>
+        <data-table-column name="Prenom">
+            <template><paper-input id="P[[item.ref_contact.ID]]" value="[[item.ref_contact.PRENOM]]"></paper-input></template>
+        </data-table-column>
+        <data-table-column name="Fonction">
+            <template><paper-input id="F[[item.ref_contact.ID]]" value="[[item.ref_contact.FONCTION]]"></paper-input></template>
+        </data-table-column>
+        <data-table-column name="Mail">
+            <template><paper-input id="M[[item.ref_contact.ID]]" value="[[item.ref_contact.MAIL]]"></paper-input></template>
+        </data-table-column>
+        <data-table-column name="Modifer">
+            <template><paper-button noink raised name="[[item.ref_contact.ID]]" on-click="modifier"></paper-button></template>
+        </data-table-column>
+        <data-table-column name="Remove">
+            <template><paper-button noink raised name="[[item.ref_contact.ID]]" on-click="remove"></paper-button></template>
+        </data-table-column>
+    </iron-data-table>
+
+    <paper-button raised id="addData" on-click="addingData">Add Data</paper-button>
+    <paper-input id="nomData" hidden label="Nom" char-counter maxlength="120"></paper-input>
+    <paper-textarea id="prenomData" hidden label="Prenom" char-counter maxlength="120"></paper-textarea>
+    <paper-textarea id="fonctionData" hidden label="Fonction" char-counter maxlength="120"></paper-textarea>
+    <paper-textarea id="mailData" hidden label="Mail" char-counter maxlength="240"></paper-textarea>
+    <paper-button raised hidden id="Enregistrer" on-click="save">Enregistrer</paper-button>
+    </body>
+    </template>
+    <script>
+        Polymer({
+            is: 'admin-page-contact',
+            properties: {
+                nom: {
+                    type: Array,
+                    nom: [],
+                },
+                fonction: {
+                    type: Array,
+                    fonction: [],
+                },
+                ObjectData: {
+                    type: Object
+                },
+            },
+            sendRequest: function(e) {
+                var body = {
+                    "table": "ref_contact",
+                    "nom": 1,
+                    "fonction": 1
+                };
+                this.$.getElement.url = "/getData";
+                this.$.getElement.body = body;
+                this.$.getElement.generateRequest();
+            },
+            ajaxResult: function(e) {
+                if (e.detail.response === "success") {
+                    this.sendRequest();
+                    this.f();
+                } else if (e.detail.response != null) {
+                    var Object = e.detail.response;
+                    this.set("ObjectData", Object);
+                    document.getElementById("tableCON").items = this.ObjectData;
+                }
+            },
+            ajaxResult2: function(e) {
+                if (e.detail.response === "error") {
+                    console.log("Error request for CON")
+                } else {
+                    console.log(e.detail.response);
+
+                    this.set("fonction", e.detail.response[1]);
+                    this.set("nom", e.detail.response[0]);
+                }
+                this.f();
+            },
+            f: function(e) {
+                var body = {
+                    "table": "ref_contact",
+                    "nom": this.querySelector("#CON").selected,
+                    "fonction": this.querySelector("#CON2").selected
+                };
+                this.$.getSQLResult.url = "/getResult";
+                this.$.getSQLResult.body = body;
+                this.$.getSQLResult.generateRequest();
+            },
+            addingData: function(e) {
+                this.querySelector("#nomData").hidden = false;
+                this.querySelector("#prenomData").hidden = false;
+                this.querySelector("#fonctionData").hidden = false;
+                this.querySelector("#mailData").hidden = false;
+                this.querySelector("#Enregistrer").hidden = false;
+            },
+            save: function(e) {
+                /*SEND IRON AJAX REQUEST TO ADD DATA INTO DATABASE*/
+
+                var body = {
+                    "table": "ref_contact",
+                    "nom": this.querySelector("#nomData").value,
+                    "prenom": this.querySelector("#prenomData").value,
+                    "fonction": this.querySelector("#fonctionData").value,
+                    "mail": this.querySelector("#mailData").value
+                }
+                this.$.getSQLResult.url = "/insertData";
+                this.$.getSQLResult.body = body;
+                this.$.getSQLResult.generateRequest();
+
+            },
+            remove: function(e) {
+                /*SEND IRON AJAX REQUEST TO REMOVE DATA FROM DATABASE*/
+                var body = {
+                    "table": "ref_contact",
+                    "ID": e.target.name
+                }
+                this.$.getSQLResult.url = "/removeData";
+                this.$.getSQLResult.body = body;
+                this.$.getSQLResult.generateRequest();
+            },
+            modifier: function(e) {
+                var body = {
+                    "table": "ref_contact",
+                    "ID": e.target.name,
+                    "nom": this.querySelector("#N" +
+                        e.target.name).value,
+                    "prenom": this.querySelector("#P" +
+                        e.target.name).value,
+                    "fonction": this.querySelector("#F" +
+                        e.target.name).value,
+                    "mail": this.querySelector("#M" +
+                        e.target.name).value
+                }
+                this.$.getSQLResult.url = "/updateData";
+                this.$.getSQLResult.body = body;
+                this.$.getSQLResult.generateRequest();
+            }
+        });
+
+    </script>
+
+</dom-module>

@@ -138,3 +138,57 @@ exports.sendSQL = function (body, cb) {
     });
 
 };
+
+exports.sendAPP = function (cb) {
+
+    var mysql = require('mysql');
+    var connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'combesb',
+        password: 'bertrand1994',
+        database: 'totalkpi'
+    });
+    var sql = "SELECT DISTINCT Application FROM source_ticket ORDER BY Application ASC";
+    connection.connect();
+
+    connection.query(sql, function (err, rows, fields) {
+        if (err) {
+            console.log('Error while performing Query.');
+            connection.end();
+        } else {
+            connection.end();
+            cb(rows);
+        }
+    });
+};
+
+exports.connect = function (body, cb) {
+
+    var mysql = require('mysql');
+    var connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'combesb',
+        password: 'bertrand1994',
+        database: 'totalkpi'
+    });
+    var sql = "SELECT LOGIN,PASSWORD FROM login";
+    connection.connect();
+
+    connection.query(sql, function (err, rows, fields) {
+        if (err) {
+            console.log('Error while performing Query.');
+            connection.end();
+        } else {
+            connection.end();
+
+            for (var i = 0; i < rows.length; i++) {
+                if ((rows[i].LOGIN == body.login) && (rows[i].PASSWORD == body.password)) {
+                    cb("ok");
+                    break;
+                }
+            }
+            cb("no");
+
+        }
+    });
+};

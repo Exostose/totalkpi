@@ -67,7 +67,7 @@
 				<div class="menu-button" on-click="selectFavTickets">Favoris tickets</div>
                 <div class="mydropdown menu-button" >Admin
                     <div class="mydropdown-content">
-                        <div on-click="selectContrat">Contrat</div>
+                        <div on-click="selectContratAdmin">Contrat</div>
                         <div on-click="selectLot">Lot</div>
                         <div on-click="selectDomaine">Domaine</div>
                         <div on-click="selectApplication">Application</div>
@@ -78,6 +78,7 @@
                         <div on-click="selectSla">Ref_sla</div>
                         <div on-click="selectPeriode">Ref_Periode</div>
                         <div on-click="selectFeu">Ref_feu</div>
+                        <div on-click="selectComite">Ref_comite</div>
                     </div>
                 </div>
             </div>
@@ -120,20 +121,17 @@
                 }
             },
             selectContrat: function() {
-                /*this.set("url","contrats");*/
                 this.fire('urlChangeEvent', {
                     route: "contrats"
                 });
 
             },
             selectFavTickets: function() {
-                this.fire('refreshTabEvent');
                 this.fire('urlChangeEvent', {
                     route: "FavTicket"
                 });
             },
             selectTicket: function() {
-                /*this.set("url","tickets")*/
                 this.fire('urlChangeEvent', {
                     route: "tickets"
                 });
@@ -144,58 +142,76 @@
                     route: "admin-page"
                 });
             },
-            selectContrat: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-contrat"});
+            selectContratAdmin: function() {
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-contrat"
+                });
 
             },
-
             selectLot: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-lot"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-lot"
+                });
 
             },
-
             selectDomaine: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-domaine"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-domaine"
+                });
 
             },
-
             selectApplication: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-application"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-application"
+                });
 
             },
-
             selectIndic: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-indic"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-indic"
+                });
 
             },
-
             selectService: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-service"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-service"
+                });
 
             },
-
             selectHoraire: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-horaire"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-horaire"
+                });
 
             },
-
             selectcontact: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-contact"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-contact"
+                });
 
             },
-
             selectSla: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-sla"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-sla"
+                });
 
             },
-
             selectPeriode: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-periode"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-periode"
+                });
 
             },
+            selectComite: function() {
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-comite"
+                });
 
+            },
             selectFeu: function() {
-                this.fire('urlChangeEvent', {route:"admin-page-feu"});
+                this.fire('urlChangeEvent', {
+                    route: "admin-page-feu"
+                });
 
             },
             logout: function() {
@@ -203,6 +219,7 @@
                 console.log("TODO:logout")
             }
         });
+
     </script>
 
 </dom-module>
